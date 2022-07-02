@@ -7,7 +7,15 @@ variable "name" {
 }
 
 variable "address_space" {
-  type  = string
+  type = string
+}
+
+variable "address_prefixes" {
+  type = string
+}
+
+variable "virtual_network_name" {
+  type = string
 }
 
 /*variable "resource_group_name" {

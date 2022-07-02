@@ -19,15 +19,39 @@ provider "azurerm" {
 }
 
 module "azure_rg" {
-    source = ".//modules/azure_rg"
-    name = var.name
-    location = var.location
+  source   = ".//modules/azure_rg"
+  name     = var.name
+  location = var.location
 }
 
 module "azure_vnet" {
-    source = ".//modules/azure_vnet"
-    name = "${var.name}"
-    location = module.azure_rg.azure_location_output
-    resource_group_name = module.azure_rg.azure_rg_output
-    address_space = var.address_space
+  source              = ".//modules/azure_vnet"
+  name                = var.name
+  location            = var.location
+  resource_group_name = module.azure_rg.azure_rg_output
+  address_space       = var.address_space
+}
+
+module "azure_lbsubnet" {
+  source              = ".//modules/azure_lbsubnet"
+  name                = var.name
+  resource_group_name = module.azure_rg.azure_rg_output
+  virtual_network_name = module.azure_vnet.azure_vnetname_output
+  address_prefixes       = var.address_prefixes
+}
+
+module "azure_websubnet" {
+  source              = ".//modules/azure_websubnet"
+  name                = var.name
+  resource_group_name = module.azure_rg.azure_rg_output
+  virtual_network_name = module.azure_vnet.azure_vnetname_output
+  address_prefixes       = var.address_prefixes
+}
+
+module "azure_appsubnet" {
+  source              = ".//modules/azure_appsubnet"
+  name                = var.name
+  resource_group_name = module.azure_rg.azure_rg_output
+  virtual_network_name = module.azure_vnet.azure_vnetname_output
+  address_prefixes       = var.address_prefixes
 }
