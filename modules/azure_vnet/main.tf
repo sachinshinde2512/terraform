@@ -24,5 +24,5 @@ resource "azurerm_virtual_network" "azure_vnet" {
     security_group = azurerm_network_security_group.azure_nsg.id
   }
   */
-  
+
 }

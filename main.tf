@@ -33,25 +33,35 @@ module "azure_vnet" {
 }
 
 module "azure_lbsubnet" {
-  source              = ".//modules/azure_lbsubnet"
-  name                = var.name
-  resource_group_name = module.azure_rg.azure_rg_output
+  source               = ".//modules/azure_lbsubnet"
+  name                 = var.name
+  resource_group_name  = module.azure_rg.azure_rg_output
   virtual_network_name = module.azure_vnet.azure_vnetname_output
-  address_prefixes       = var.address_prefixes
+  address_prefixes     = var.address_prefixes
 }
 
 module "azure_websubnet" {
-  source              = ".//modules/azure_websubnet"
-  name                = var.name
-  resource_group_name = module.azure_rg.azure_rg_output
+  source               = ".//modules/azure_websubnet"
+  name                 = var.name
+  resource_group_name  = module.azure_rg.azure_rg_output
   virtual_network_name = module.azure_vnet.azure_vnetname_output
-  address_prefixes       = var.address_prefixes
+  address_prefixes     = var.address_prefixes
 }
 
 module "azure_appsubnet" {
-  source              = ".//modules/azure_appsubnet"
-  name                = var.name
-  resource_group_name = module.azure_rg.azure_rg_output
+  source               = ".//modules/azure_appsubnet"
+  name                 = var.name
+  resource_group_name  = module.azure_rg.azure_rg_output
   virtual_network_name = module.azure_vnet.azure_vnetname_output
-  address_prefixes       = var.address_prefixes
+  address_prefixes     = var.address_prefixes
+}
+
+module "azure_vm" {
+  source              = ".//modules/azure_vm"
+  name                = var.name
+  location            = var.location
+  resource_group_name = module.azure_rg.azure_rg_output
+  subnet_id           = module.azure_appsubnet.azure_appsubnetid_output
+  address_prefixes    = var.address_prefixes
+  virtual_network_name= module.azure_vnet.azure_vnetname_output
 }
